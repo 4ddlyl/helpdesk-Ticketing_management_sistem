@@ -6,3 +6,4 @@ pymongo
 fastapi[standard]
 bcrypt
 pyjwt
+python-dotenv

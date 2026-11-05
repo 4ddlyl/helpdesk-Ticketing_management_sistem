@@ -1,5 +1,5 @@
 import pymongo
-from dotenv import load_workbook, load_dotenv
+from dotenv import load_dotenv
 import os
 
 load_dotenv()

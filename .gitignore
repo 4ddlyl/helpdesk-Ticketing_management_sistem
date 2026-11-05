@@ -1,3 +1,5 @@
 note.txt
 .env
 venv/
+.vscode/*
+!.vscode/settings.json

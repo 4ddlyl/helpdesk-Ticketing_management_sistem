@@ -12,7 +12,7 @@ class Model_User_Regist(BaseModel) :
     class Config :
         arbitary_types_allowed =True
         json_encoders = {ObjectId : str}
-        allow_population_by_field_name = True
+        allow_population_by_field_name = True    
 
 class Model_User_Login(BaseModel):
     id : Optional[str] = Field(default=None , alias="_id")

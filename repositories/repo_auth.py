@@ -37,5 +37,8 @@ class Repo_Auth :
             result.append(i)
         return TypeAdapter(List[Model_User_Regist]).validate_python(result)
 
+    
+
+
           
 

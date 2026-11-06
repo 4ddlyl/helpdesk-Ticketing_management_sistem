@@ -53,5 +53,4 @@ class ServiceAuth :
         return {
             "data" : result
         } 
-
-                        
+                    

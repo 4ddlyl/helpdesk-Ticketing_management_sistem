@@ -6,8 +6,9 @@ class dto_user_regist(BaseModel) :
     email : EmailStr
     password : str
 
-class dto_user_login :
+class dto_user_login(BaseModel) :
     email : EmailStr
     password : str
+    
 
     

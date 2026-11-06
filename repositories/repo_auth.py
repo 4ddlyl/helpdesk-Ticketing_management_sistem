@@ -1,5 +1,6 @@
+from typing import List
 from models.model_user import Model_User_Regist
-from pydantic import TypeAdapter
+from pydantic import EmailStr, TypeAdapter
 from fastapi import Depends
 from typing import Any
 from config.database import get_db
@@ -18,5 +19,23 @@ class Repo_Auth :
             if "_id" in result :
                 result["_id"] = str(result["_id"])
             return TypeAdapter(Model_User_Regist).validate_python(result)
-        return None                    
+        return None
+
+    def find_by_email(self , email : EmailStr) :
+        result = self.collection.find_one({"email" : email})
+        if result is not None :
+            if "_id" in result:
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_User_Regist).validate_python(result)
+
+    def get_all(self):
+        cursor = self.collection.find({})
+        result = []
+        for i in cursor :
+            if "_id" in i :
+                i["_id"] = str(i["_id"])
+            result.append(i)
+        return TypeAdapter(List[Model_User_Regist]).validate_python(result)
+
+          
 

@@ -1,13 +1,15 @@
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr
 from pydantic import Field
-from typing import Optional
+from typing import Literal, Optional
+from role.role_enum import UserRole
 
 class Model_User_Regist(BaseModel) :
     id : Optional[str] = Field(default=None , alias="_id")
     username : str
     password : str
     email : Optional[EmailStr] = None
+    role : UserRole = UserRole.CUSTOMER
 
     class Config :
         arbitary_types_allowed =True

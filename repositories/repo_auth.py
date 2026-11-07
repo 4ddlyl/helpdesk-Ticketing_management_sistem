@@ -18,6 +18,8 @@ class Repo_Auth :
         if result is not None :
             if "_id" in result :
                 result["_id"] = str(result["_id"])
+
+                
             return TypeAdapter(Model_User_Regist).validate_python(result)
         return None
 
@@ -36,6 +38,7 @@ class Repo_Auth :
                 i["_id"] = str(i["_id"])
             result.append(i)
         return TypeAdapter(List[Model_User_Regist]).validate_python(result)
+
 
     
 

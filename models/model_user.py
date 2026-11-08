@@ -24,7 +24,8 @@ class Model_User_Login(BaseModel):
     class Config :
         arbitary_types_allowed =True
         json_encoders = {ObjectId : str}
-        allow_population_by_field_name = True    
+        allow_population_by_field_name = True
+            
             
 
 

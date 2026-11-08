@@ -1,3 +1,4 @@
+from models.model_user import Model_User_Regist
 from role.role_enum import UserRole
 from utils.token_blacklist import add_to_blacklist
 from utils.jwt_token import access_data_token
@@ -46,6 +47,30 @@ class ServiceAuth :
             "token type" : "bareer"
         }
 
+    def update_username(self , email : str , new_username : str) :
+        check_user = self.repo.find_by_username(new_username)
+        if check_user :
+            raise HTTPException(400 , "username sudah digunakan")
+        updated_user = self.repo.update_username(email , new_username)
+        if not updated_user :
+            raise HTTPException(404 , "Not found")
+        return {
+            "message" : f"berhasil mengubah menjadi {new_username} "
+        }
+
+    def update_password(self , new_password , old_pasword , current_user) :
+        #cek pw lama
+        if not HashHelper.verifikasi_password(old_pasword , current_user.password) :
+            raise HTTPException(401 , "password lama salah")
+
+        #hashing
+        new_hash = HashHelper.hash_password(new_password)
+
+        self.repo.update_password(current_user.email , new_hash)
+        return {
+            "message" : "berhasil"
+        }
+    
     def logout(self , token:str):
         add_to_blacklist(token)
         return {"message" : "berhasil logout"}    

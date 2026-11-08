@@ -17,11 +17,25 @@ class Repo_Auth :
         result = self.collection.find_one({"username" : username})
         if result is not None :
             if "_id" in result :
-                result["_id"] = str(result["_id"])
-
-                
+                result["_id"] = str(result["_id"])      
             return TypeAdapter(Model_User_Regist).validate_python(result)
         return None
+
+    def update_username(self , email : EmailStr , new_username :str) :
+        result = self.collection.find_one_and_update({"email" : email} , {"$set" : {"username" : new_username}} , return_document=True)
+        if result is not None :
+            if "_id" in result :
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_User_Regist).validate_python(result)
+        return None  
+
+    def update_password(self , email :EmailStr , new_password : str) :
+        result = self.collection.find_one_and_update({"email" : email}, {"$set" : {"password" : new_password}} , return_document=True)  
+        if result is not None:
+            if "_id" in result :
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_User_Regist).validate_python(result)
+        return None    
 
     def find_by_email(self , email : EmailStr) :
         result = self.collection.find_one({"email" : email})
@@ -38,10 +52,3 @@ class Repo_Auth :
                 i["_id"] = str(i["_id"])
             result.append(i)
         return TypeAdapter(List[Model_User_Regist]).validate_python(result)
-
-
-    
-
-
-          
-

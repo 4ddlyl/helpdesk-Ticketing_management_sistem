@@ -1,7 +1,7 @@
 from typing import Optional
 from bson import ObjectId
 from pydantic import BaseModel, Field
-from enum.role_enum import UserRole
+from role.role_enum import UserRole
 
 class Model_User_Admin_And_Aggent(BaseModel) :
     id : Optional[str] = Field(default=None , alias="_id")

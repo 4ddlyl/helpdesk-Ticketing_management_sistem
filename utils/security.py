@@ -5,6 +5,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from repositories.repo_auth import Repo_Auth
 import jwt
 
+
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM ="HS256"

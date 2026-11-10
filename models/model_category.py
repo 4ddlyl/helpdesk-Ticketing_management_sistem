@@ -1,8 +1,8 @@
 from typing import Optional
 from bson import ObjectId
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-class Model_Category:
+class Model_Category(BaseModel):
     id : Optional[str] = Field(default=None , alias = "_id")
     name : str
     description : str

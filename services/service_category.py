@@ -15,7 +15,7 @@ class Service_Category :
         data_dict = new_Category.model_dump()
         result = self.repo.create_category(data_dict)
         return {
-            "message" : f"{result} berhasil ditambahkan"
+            "message" : f"berhasil ditambahkan"
         }
 
     def find_all_categories(self):

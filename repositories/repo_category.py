@@ -5,6 +5,7 @@ from config.database import get_db
 from pydantic import TypeAdapter
 from models.model_category import Model_Category
 from models.model_common import PyObjectId
+from bson import ObjectId
 
 class Repo_Category :
     def __init__(self , db : Database = Depends(get_db)):
@@ -23,11 +24,15 @@ class Repo_Category :
         return TypeAdapter(List[Model_Category]).validate_python(result)
 
     def find_by_id_Category(self , category_id : str) :
-        result = self.collection.find_one({"id" : category_id})
+        if not ObjectId.is_valid(category_id):
+            return None
+        
+        result = self.collection.find_one({"_id" : PyObjectId(category_id)})
         if result is not None :
             if "_id" in result:
                 result["_id"] = str(result["_id"])
             return TypeAdapter(Model_Category).validate_python(result)
+        return None
 
     def find_by_name_category(self , name : str) :
         result = self.collection.find_one({"name" : name})

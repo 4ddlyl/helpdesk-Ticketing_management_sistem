@@ -4,7 +4,7 @@ from bson import ObjectId
 from pydantic import BaseModel, Field
 from role.role_enum import TicketPriority, TicketStatus
 
-class Model_Tickets(BaseModel) :
+class Model_Ticket(BaseModel) :
     id : Optional["str"] = Field(default=None , alias="_id")
     ticket_number : str
     title : str

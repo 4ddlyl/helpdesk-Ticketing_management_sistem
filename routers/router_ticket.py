@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from role.role_enum import UserRole
 from utils.security import get_current_user
 from services.service_ticket import Service_Ticket
-from dto.dto_ticket import dto_ticket_create
+from dto.tickets.dto_ticket import dto_ticket_create
 from utils.security import require_role
 
 router_ticket= APIRouter(prefix="/ticket" ,tags=["tiket"])

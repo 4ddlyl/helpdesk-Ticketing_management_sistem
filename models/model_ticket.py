@@ -5,14 +5,14 @@ from pydantic import BaseModel, Field
 from role.role_enum import TicketPriority, TicketStatus
 
 class Model_Ticket(BaseModel) :
-    id : Optional["str"] = Field(default=None , alias="_id")
-    ticket_number : str
+    id : Optional[str] = Field(default=None , alias="_id")
+    ticket_number : Optional[str] = None
     title : str
     description : str
-    category_id :str
+    category_id :Optional[str] = None
     priority : TicketPriority
     status : TicketStatus
-    customer_id : str
+    customer_id : Optional[str] = None
     aggent_id : Optional[str] = None
 
     class Config :

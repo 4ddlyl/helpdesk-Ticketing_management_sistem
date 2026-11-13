@@ -3,6 +3,7 @@ from repositories.repo_category import Repo_Category
 from role.role_enum import TicketStatus
 from dto.tickets.dto_ticket import dto_ticket_create
 from repositories.repo_ticket import Repo_Ticket
+from datetime import datetime, timezone
 
 class Service_Ticket :
 
@@ -17,8 +18,18 @@ class Service_Ticket :
          
         data_dict = data.model_dump()
 
+        #count tiket hari ini
+        count_today = self.repo.count_tickets_today()
+        #create no urut
+        urutan  = str(count_today + 1).zfill(4)
+        #ambil tgl hari ini
+        tanggal = datetime.now(timezone.utc).strftime("%Y%m%d")
+        #gabungin
+        data_dict["ticket_number"] = f"TKT--{tanggal}--{urutan}"
+        data_dict["created_at"] = datetime.now(timezone.utc)  
         data_dict["status"] = TicketStatus.OPEN.value
         data_dict["customer_id"] = customer_id
+        data_dict["agent_id"] = None
         
 
         result =  self.repo.create_ticket_repo(data_dict)
@@ -26,3 +37,13 @@ class Service_Ticket :
             "message" : "ticket berhasil dibuat" ,
             "id" : str(result.inserted_id)
         }
+
+    def get_all_ticket(self) :
+        result =  self.repo.get_all_tickets()
+        if result is None:
+            raise HTTPException(404, "not found")
+
+        return {
+            "result" : result
+        }
+

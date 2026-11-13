@@ -11,3 +11,7 @@ router_ticket= APIRouter(prefix="/ticket" ,tags=["tiket"])
 def create_ticket(data : dto_ticket_create , current_user = Depends(get_current_user) , service_ticket = Depends(Service_Ticket) ,
                   user_Access = Depends(require_role([UserRole.CUSTOMER]))):
     return service_ticket.create_ticket(data , current_user.id)
+
+@router_ticket.get("/tickets")
+def get_all_tickets(service_tiket = Depends(Service_Ticket) , admin_only = Depends(require_role([UserRole.ADMIN]))):
+    return service_tiket.get_all_ticket()

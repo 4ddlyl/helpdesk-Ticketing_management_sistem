@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException
 from repositories.repo_category import Repo_Category
 from role.role_enum import TicketStatus
 from dto.tickets.dto_ticket import dto_ticket_create
+from dto.tickets.dto_ticket_response import dto_ticket_response
 from repositories.repo_ticket import Repo_Ticket
 from datetime import datetime, timezone
 
@@ -46,4 +47,12 @@ class Service_Ticket :
         return {
             "result" : result
         }
+
+    def get_my_tickets(self , customer_id : str):
+        result = self.repo.get_id_tickets(customer_id)
+        if not result:
+            raise HTTPException(404, "not found")
+
+        return result
+
 

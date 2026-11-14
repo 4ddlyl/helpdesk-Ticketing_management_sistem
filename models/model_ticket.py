@@ -1,5 +1,5 @@
 from typing import Optional
-
+from datetime import datetime
 from bson import ObjectId
 from pydantic import BaseModel, Field
 from role.role_enum import TicketPriority, TicketStatus
@@ -13,7 +13,8 @@ class Model_Ticket(BaseModel) :
     priority : TicketPriority
     status : TicketStatus
     customer_id : Optional[str] = None
-    aggent_id : Optional[str] = None
+    agent_id : Optional[str] = None
+    created_at : Optional[datetime] = None
 
     class Config :
         arbitary_types_allowed =True

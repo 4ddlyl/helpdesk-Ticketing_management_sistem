@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field
 from role.role_enum import TicketPriority,TicketStatus
@@ -9,6 +9,6 @@ class dto_ticket_response(BaseModel) :
     title : str
     status : TicketStatus
     priority : TicketPriority
-    customer_id : str
-    agent_id : Optional[str]
-    created_at : datetime
+    customer_id : Optional[str] = None
+    agent_id : Optional[str] = None
+    created_at : Optional[datetime] = None

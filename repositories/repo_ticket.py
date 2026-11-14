@@ -35,6 +35,16 @@ class Repo_Ticket :
             if "_id" in i :
                 i["_id"] = str(i["_id"])
             cursor.append(i)
-        return TypeAdapter(List[Model_Ticket]).validate_python(cursor)          
+        return TypeAdapter(List[Model_Ticket]).validate_python(cursor) 
+
+    def get_id_tickets(self , customer_id : str):
+        result = self.collection.find({"customer_id" : customer_id})
+        wrapper = []
+        for i in result:
+            if "_id" in i :
+                i["_id"] = str(i["_id"])
+            wrapper.append(i)    
+        return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)    
+
 
 

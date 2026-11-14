@@ -15,3 +15,8 @@ def create_ticket(data : dto_ticket_create , current_user = Depends(get_current_
 @router_ticket.get("/tickets")
 def get_all_tickets(service_tiket = Depends(Service_Ticket) , admin_only = Depends(require_role([UserRole.ADMIN]))):
     return service_tiket.get_all_ticket()
+
+@router_ticket.get("/mytickets")
+def get_my_tickets_router(customer_id : str ,service_tickets = Depends(Service_Ticket), 
+                          user_access = Depends(require_role([UserRole.CUSTOMER]))):
+    return service_tickets.get_my_tickets(customer_id)

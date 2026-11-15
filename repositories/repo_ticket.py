@@ -44,7 +44,16 @@ class Repo_Ticket :
             if "_id" in i :
                 i["_id"] = str(i["_id"])
             wrapper.append(i)    
-        return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)    
+        return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)
+
+    def find_by_agent_id(self , aggent_id : str):
+        result = self.collection.find({"agent_id" : aggent_id})
+        wrapper = []
+        for i in result:
+            if "_id" in i:
+                i["_id"] = str(i["_id"])
+            wrapper.append(i)
+        return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)
 
 
 

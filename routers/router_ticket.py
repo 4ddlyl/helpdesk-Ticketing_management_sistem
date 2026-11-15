@@ -20,3 +20,7 @@ def get_all_tickets(service_tiket = Depends(Service_Ticket) , admin_only = Depen
 def get_my_tickets_router(customer_id : str ,service_tickets = Depends(Service_Ticket), 
                           user_access = Depends(require_role([UserRole.CUSTOMER]))):
     return service_tickets.get_my_tickets(customer_id)
+
+@router_ticket.get("/assigned")
+def get_ticket_by_aggent_id(require_role = Depends(require_role([UserRole.AGENT])) , seervice_tickets = Depends(Service_Ticket)):
+    return seervice_tickets.find_ticket_by_aggent(require_role.id)

@@ -55,4 +55,9 @@ class Service_Ticket :
 
         return result
 
+    def find_ticket_by_aggent(self, aggent_id : str):
+        result = self.repo.find_by_agent_id(aggent_id)
+        if not result:
+            raise HTTPException(404, "Not found")
+        return result
 

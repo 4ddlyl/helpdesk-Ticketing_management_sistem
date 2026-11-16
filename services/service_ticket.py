@@ -58,6 +58,15 @@ class Service_Ticket :
     def find_ticket_by_aggent(self, aggent_id : str):
         result = self.repo.find_by_agent_id(aggent_id)
         if not result:
-            raise HTTPException(404, "Not found")
+            raise HTTPException(404, "not found")
         return result
+
+    def update_status_ticket(self ,ticket_id : str, agent_id : str , new_status : TicketStatus):
+        result = self.repo.upadate_status_ticket(ticket_id,agent_id , new_status)
+        if result is None :
+            raise HTTPException(404 , "not found")
+        status_lama = result.status.value
+        return {
+            "message" : f"berhasil update dari {status_lama} to {new_status.value}"
+        }
 

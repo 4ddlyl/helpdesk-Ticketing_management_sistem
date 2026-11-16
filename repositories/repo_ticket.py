@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from fastapi import Depends
 from pydantic import TypeAdapter
 from pymongo.synchronous.database import Database
+from role.role_enum import TicketStatus
 from models.model_common import PyObjectId
 from models.model_ticket import Model_Ticket
 from config.database import get_db
@@ -55,5 +56,9 @@ class Repo_Ticket :
             wrapper.append(i)
         return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)
 
-
-
+    def upadate_status_ticket(self ,ticket_id : str, agent_id : str , new_status : TicketStatus):
+        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id) ,"agent_id" : agent_id} , {"$set" : {"status" : new_status}})
+        if result is not None :
+            if "_id" in result:
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_Ticket).validate_python(result)    

@@ -9,6 +9,6 @@ class dto_ticket_response(BaseModel) :
     title : str
     status : TicketStatus
     priority : TicketPriority
-    customer_id : Optional[str] = None
+    sender_id : Optional[str] = None
     agent_id : Optional[str] = None
     created_at : Optional[datetime] = None

@@ -28,4 +28,14 @@ class Service_Message_ticket :
         
         return {
             "messsage" : f"{result} berhasil dikirim"
-        }    
+        }
+
+    def find_chat(self , ticket_id : str , user_id :str):
+        result1 = self.repo_ticket.find_ticket_by_id(ticket_id)
+        if result1 is None :
+            raise HTTPException(404 , "not found")
+        if user_id != result1.agent_id and user_id != result1.customer_id:
+            raise HTTPException(403,"notot")
+        
+        result = self.repo.find_chat_every_ticket(ticket_id)
+        return result    

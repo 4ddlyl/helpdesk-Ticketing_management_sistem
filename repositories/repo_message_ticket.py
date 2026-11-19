@@ -15,8 +15,9 @@ class Repo_Message_Ticket:
         result = self.collection.insert_one(new_message)
         return str(result.inserted_id)
 
-    def find_by_id(self, message_id : str):
-        result = self.collection.find_one({"_id" : PyObjectId(message_id)})
+    def find_chat_every_ticket(self, ticket_id : str):
+        result = self.collection.find({"ticket_id" : ticket_id})
+        result.sort("created_at",1)
         wrapper = [] 
         for i in result:
             if "_id" in i:

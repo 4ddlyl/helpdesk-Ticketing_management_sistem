@@ -61,4 +61,11 @@ class Repo_Ticket :
         if result is not None :
             if "_id" in result:
                 result["_id"] = str(result["_id"])
-            return TypeAdapter(Model_Ticket).validate_python(result)    
+            return TypeAdapter(Model_Ticket).validate_python(result)
+
+    def resolve_ticket_by_agent_repo(self, ticket_id : str):
+        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id)} , {"$set" : {"status" : TicketStatus.RESOLVED.value}})
+        if result is not None:
+            if "_id" in result:
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_Ticket).validate_python(result)           

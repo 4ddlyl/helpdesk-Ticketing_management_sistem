@@ -1,4 +1,5 @@
 from fastapi import Depends, HTTPException
+from dto.dto_rating_feedback import dto_rating_feedback
 from repositories.repo_category import Repo_Category
 from role.role_enum import TicketStatus
 from dto.tickets.dto_ticket import dto_ticket_create
@@ -16,7 +17,7 @@ class Service_Ticket :
         check = self.repo_category.find_by_id_Category(data.category_id)
         if check is None:
             raise HTTPException(400 , "not valid")
-         
+        
         data_dict = data.model_dump()
 
         #count tiket hari ini
@@ -83,4 +84,17 @@ class Service_Ticket :
             raise HTTPException(400, "closed , impossible to edit")
         return {
             "message" : "tiket berhasil diselesaikan"
+        }
+
+    def rating_and_feedback(self , ticket_id : str , data : dto_rating_feedback , customer_id : str):
+        check = self.repo.find_ticket_by_id(ticket_id)
+        if check is None:
+            raise HTTPException(404 ,"Not found")
+        if check.status != TicketStatus.RESOLVED:
+            raise HTTPException(400 , "impossible to edit")
+        if check.customer_id != customer_id:
+            raise HTTPException(403 , "not yours")
+        result = self.repo.rating_and_feedback_repo(ticket_id, data.rating , data.ulasan)
+        return {
+            "message" : "success"
         }

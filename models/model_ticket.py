@@ -15,9 +15,12 @@ class Model_Ticket(BaseModel) :
     customer_id : Optional[str] = None
     agent_id : Optional[str] = None
     created_at : Optional[datetime] = None
+    rating_feedback : Optional[int] = None
+    ulasan : Optional[str] = None
 
     class Config :
         arbitary_types_allowed =True
         json_encoders = {ObjectId : str}
         allow_population_by_field_name = True
+
 

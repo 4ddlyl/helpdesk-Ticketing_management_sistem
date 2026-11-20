@@ -68,4 +68,11 @@ class Repo_Ticket :
         if result is not None:
             if "_id" in result:
                 result["_id"] = str(result["_id"])
-            return TypeAdapter(Model_Ticket).validate_python(result)           
+            return TypeAdapter(Model_Ticket).validate_python(result)
+
+    def rating_and_feedback_repo(self ,ticket_id : str, rating : int , ulasan_new : str):
+        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id)} , {"$set" : {"rating_feedback" : rating , "ulasan" : ulasan_new , "status" : TicketStatus.CLOSED.value}} , return_document=True)
+        if result is not None :
+            if "_id" in result :
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_Ticket).validate_python(result)                 

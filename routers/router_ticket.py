@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from dto.dto_rating_feedback import dto_rating_feedback
 from role.role_enum import TicketStatus, UserRole
 from utils.security import get_current_user
 from services.service_ticket import Service_Ticket
@@ -34,3 +35,8 @@ def update_status_ticket(ticket_id : str,agent_id : str, new_status : TicketStat
 def resolve_ticket(ticket_id : str , current_user = Depends(get_current_user) , service_ticket = Depends(Service_Ticket),
                    user_access = Depends(require_role([UserRole.AGENT]))):
     return service_ticket.resolve_ticket_by_agent(ticket_id ,current_user.id)
+
+@router_ticket.put("/{ticket_id}/rating")
+def rating_ticket(ticket_id : str , data : dto_rating_feedback , service_ticket = Depends(Service_Ticket) ,
+                  current_user = Depends(get_current_user) , user_access = Depends(require_role([UserRole.CUSTOMER]))):
+    return service_ticket.rating_and_feedback(ticket_id , data , current_user.id)

@@ -40,3 +40,7 @@ def resolve_ticket(ticket_id : str , current_user = Depends(get_current_user) , 
 def rating_ticket(ticket_id : str , data : dto_rating_feedback , service_ticket = Depends(Service_Ticket) ,
                   current_user = Depends(get_current_user) , user_access = Depends(require_role([UserRole.CUSTOMER]))):
     return service_ticket.rating_and_feedback(ticket_id , data , current_user.id)
+
+@router_ticket.get("/dashboard")
+def get_admin_dashboard(service_ticket = Depends(Service_Ticket)):
+    return service_ticket.get_dashboard()

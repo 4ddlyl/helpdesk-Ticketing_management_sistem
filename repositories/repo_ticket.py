@@ -75,4 +75,53 @@ class Repo_Ticket :
         if result is not None :
             if "_id" in result :
                 result["_id"] = str(result["_id"])
-            return TypeAdapter(Model_Ticket).validate_python(result)                 
+            return TypeAdapter(Model_Ticket).validate_python(result)
+
+    def count_total_ticket(self):
+        return self.collection.count_documents({})
+
+    def get_stats_by_status(self):
+        pipeline = [
+            {
+                "$group" : {"_id" : "$status", "total" : {"$sum" : 1}}
+            },
+            {
+                "$sort" : {"_id" : 1}
+            }
+        ]
+        return list(self.collection.aggregate(pipeline))
+
+    def get_stats_by_priority(self):
+        pipeline = [
+            {
+                "$group" : {"_id" : "$priority" , "total" : {"$sum" : 1}}
+            }
+        ]
+        return list(self.collection.aggregate(pipeline))
+
+    def get_stats_by_agent(self):
+        pipeline = [
+            {
+                #get ticket who has aggent_id
+                "$match" : {"agent_id" : {"$ne" : None}}
+            },
+            {
+                #grouping by agent_id then count
+                "$group" : {"_id" : "$agent_id" , "total_tickets" : {"$sum" : 1}}
+            }
+        ]
+        return list(self.collection.aggregate(pipeline))
+
+    def ticket_unsassigned_agent(self):
+        return self.collection.count_documents({"agent_id" : None})
+
+    def get_daily_tickets_trend(self):
+        pipeline = [
+            {
+                "$group" : {"_id" : {"$dateToString" :  {"format" : "%Y-%m-%d" , "date" : "$created_at"}},
+                "total" : {"$sum" : 1},
+            }},
+            {"$sort" : {"_id" : 1}},
+            {"$limit" : 7},
+        ]
+        return list(self.collection.aggregate(pipeline))        

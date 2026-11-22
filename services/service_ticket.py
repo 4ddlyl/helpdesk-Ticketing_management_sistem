@@ -98,3 +98,44 @@ class Service_Ticket :
         return {
             "message" : "success"
         }
+
+    def get_dashboard(self) :
+        total = self.repo.count_total_ticket()
+        by_status = self.repo.get_stats_by_status()
+        by_priority = self.repo.get_stats_by_priority()
+        by_agent = self.repo.get_stats_by_agent()
+        unassigned_agent = self.repo.ticket_unsassigned_agent()
+        daily_tickets_trend = self.repo.get_daily_tickets_trend()
+
+        status_dict = {}
+        for i in by_status :
+            key = i["_id"]
+            value = i["total"]
+            status_dict[key] = value
+
+        priority_dict = {}
+        for i in by_priority:
+            key = i["_id"]
+            value = i["total"]
+            priority_dict[key] = value
+
+        dates = []
+        totals = []
+        for i in daily_tickets_trend:
+            dates.append(i["_id"])
+            totals.append(i["total"])
+        dates.reverse()
+        totals.reverse()    
+            
+
+        return {
+            "total tickets" : total,
+            "tickets by status" : status_dict,
+            "tickets by priority" : priority_dict,
+            "agent performance" : by_agent,
+            "unassigned agent" : unassigned_agent,
+            "daily ticket trend" : {
+                "tanggal" : dates,
+                "total" : totals
+            }
+        }         

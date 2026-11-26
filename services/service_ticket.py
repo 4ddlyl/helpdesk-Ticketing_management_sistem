@@ -74,6 +74,16 @@ class Service_Ticket :
             "message" : f"berhasil update dari {status_lama} to {new_status.value}"
         }
 
+    def assign_ticket(self ,ticket_id :str , agent_id :str):
+        check = self.repo.find_ticket_by_id(ticket_id)
+        if check is None:
+            raise HTTPException(404 , "Not found")
+        if check.status == TicketStatus.RESOLVED or check.status == TicketStatus.CLOSED:
+            raise HTTPException(400 , "impossible to edit")
+        valid = self.repo.assign_ticket_repo(ticket_id, agent_id)
+        return f"ticket berhasil di arahkan ke agent"
+        
+
     def resolve_ticket_by_agent(self , ticket_id : str, agent_id :str):
         check = self.repo.resolve_ticket_by_agent_repo(ticket_id)
         if check is None:

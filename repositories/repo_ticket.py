@@ -57,8 +57,15 @@ class Repo_Ticket :
         return TypeAdapter(List[Model_Ticket]).validate_python(wrapper)
 
     def upadate_status_ticket(self ,ticket_id : str, agent_id : str , new_status : TicketStatus):
-        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id) ,"agent_id" : agent_id} , {"$set" : {"status" : new_status}})
+        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id) ,"agent_id" : agent_id} , {"$set" : {"status" : new_status.value}},return_document=True)
         if result is not None :
+            if "_id" in result:
+                result["_id"] = str(result["_id"])
+            return TypeAdapter(Model_Ticket).validate_python(result)
+
+    def assign_ticket_repo(self , ticket_id : str , agent_id :str):
+        result = self.collection.find_one_and_update({"_id" : PyObjectId(ticket_id)} ,{"$set" : {"agent_id" : agent_id,"status" : TicketStatus.IN_PROGRESS.value}})
+        if result is not None:
             if "_id" in result:
                 result["_id"] = str(result["_id"])
             return TypeAdapter(Model_Ticket).validate_python(result)

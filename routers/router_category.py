@@ -13,8 +13,7 @@ def create_category(new_category : dto_category_create , service_category = Depe
     return service_category.create_category(new_category)
 
 @router_category.get("/all")
-def get_all_categories(service_category = Depends(Service_Category),
-                       admin_only = Depends(require_role([UserRole.ADMIN]))):
+def get_all_categories(service_category = Depends(Service_Category)):
     return service_category.find_all_categories()
 
 @router_category.put("/update")

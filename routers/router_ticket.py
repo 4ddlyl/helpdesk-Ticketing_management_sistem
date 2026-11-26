@@ -31,6 +31,11 @@ def update_status_ticket(ticket_id : str,agent_id : str, new_status : TicketStat
                          user_access = Depends(require_role([UserRole.ADMIN]))):
     return service_ticket.update_status_ticket(ticket_id,agent_id ,new_status)
 
+@router_ticket.put("/{ticket_id}/assign")
+def assign_ticket_router(ticket_id : str ,agent_id:str , service_ticket =Depends(Service_Ticket),
+                         admin_only = Depends(require_role([UserRole.ADMIN]))):
+    return service_ticket.assign_ticket(ticket_id , agent_id)
+
 @router_ticket.put("/{ticket_id}/resolve")
 def resolve_ticket(ticket_id : str , current_user = Depends(get_current_user) , service_ticket = Depends(Service_Ticket),
                    user_access = Depends(require_role([UserRole.AGENT]))):
